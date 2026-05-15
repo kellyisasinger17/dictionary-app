@@ -8,7 +8,7 @@ test('renders dictionary search page', () => {
   const entry = screen.getByRole('heading', { name: /hello/i });
 
   expect(searchInput).toBeInTheDocument();
-  expect(searchInput).toHaveValue('hello');
+  expect(searchInput).toHaveValue('');
   expect(title).toBeInTheDocument();
   expect(entry).toBeInTheDocument();
 });
