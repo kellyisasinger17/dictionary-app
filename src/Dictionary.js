@@ -120,10 +120,9 @@ export default function Dictionary() {
   return (
     <main className="Dictionary">
       <header className="Dictionary-header">
-        <div className="Dictionary-book" aria-hidden="true">
-          <span></span>
-          <span></span>
-        </div>
+        <span className="material-symbols-outlined" aria-hidden="true">
+          dictionary
+        </span>
         <h1>Dictionary</h1>
       </header>
 
