@@ -109,6 +109,19 @@
   padding: 0 30px;
 }
 
+.Dictionary-search button:disabled {
+  color: #666666;
+  cursor: wait;
+}
+
+.Dictionary-error {
+  color: #b00020;
+  font-size: 17px;
+  font-style: normal;
+  margin: 12px 0 0;
+  text-align: left;
+}
+
 .Dictionary-entry {
   margin: 0 auto;
   max-width: 780px;
@@ -123,22 +136,56 @@
   margin: 0;
 }
 
-.Dictionary-phonetic {
+.Dictionary-phonetics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
   margin-top: 8px;
 }
 
-.Dictionary-definition {
+.Dictionary-phonetics span {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.Dictionary-meanings {
   margin-top: 28px;
 }
 
-.Dictionary-definition h3,
-.Dictionary-synonyms h3 {
+.Dictionary-meaning + .Dictionary-meaning {
+  margin-top: 32px;
+}
+
+.Dictionary-meaning h3,
+.Dictionary-synonyms h4 {
+  font-size: 24px;
+  font-weight: 400;
   font-style: italic;
   margin-bottom: 2px;
 }
 
-.Dictionary-definition p {
+.Dictionary-definitions {
+  margin: 0;
+  padding-left: 26px;
+}
+
+.Dictionary-definitions li {
   font-size: 23px;
+  margin-top: 4px;
+}
+
+.Dictionary-definitions li + li {
+  margin-top: 12px;
+}
+
+.Dictionary-definitions p {
+  font-size: 23px;
+}
+
+.Dictionary-example {
+  color: #555555;
+  font-style: italic;
+  margin-top: 6px;
 }
 
 .Dictionary-synonyms {

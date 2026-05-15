@@ -5,9 +5,10 @@ test('renders dictionary search page', () => {
   render(<App />);
   const searchInput = screen.getByRole('searchbox', { name: /search word/i });
   const title = screen.getByRole('heading', { name: /dictionary/i });
-  const entry = screen.getByRole('heading', { name: /sunset/i });
+  const entry = screen.getByRole('heading', { name: /hello/i });
 
   expect(searchInput).toBeInTheDocument();
+  expect(searchInput).toHaveValue('hello');
   expect(title).toBeInTheDocument();
   expect(entry).toBeInTheDocument();
 });

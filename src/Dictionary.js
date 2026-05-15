@@ -1,5 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Dictionary.css";
+
+const apiKey = "0232oa2bd084ect6f17c5fee93b97744";
+
+const initialEntry = {
+  word: "Hello",
+  phonetics: ["/həˈləʊ/", "/hɛˈləʊ/"],
+  meanings: [
+    {
+      partOfSpeech: "exclamation",
+      definitions: [
+        {
+          definition: "Used as a greeting or to begin a phone conversation.",
+          example: "Hello, how are you?",
+          synonyms: ["hi", "greetings", "hey"],
+        },
+      ],
+      synonyms: ["hi", "greetings", "hey"],
+    },
+  ],
+};
 
 const photos = [
   {
@@ -16,9 +36,85 @@ const photos = [
   },
 ];
 
+function formatEntry(result) {
+  if (!result.meanings || result.meanings.length === 0) {
+    throw new Error("Word not found.");
+  }
+
+  const phonetics = [
+    result.phonetic,
+    ...(result.phonetics || []).map((phonetic) => phonetic.text),
+  ].filter(Boolean);
+  const meanings = (result.meanings || []).map((meaning) => ({
+    partOfSpeech: meaning.partOfSpeech || "definition",
+    definitions: (meaning.definitions || [
+      {
+        definition: meaning.definition,
+        example: meaning.example,
+        synonyms: meaning.synonyms,
+      },
+    ]).map((definition) => ({
+      definition: definition.definition || "No definition available.",
+      example: definition.example,
+      synonyms: definition.synonyms || [],
+    })),
+    synonyms: meaning.synonyms || [],
+  }));
+
+  return {
+    word: result.word || "Unknown",
+    phonetics:
+      [...new Set(phonetics)].length > 0 ? [...new Set(phonetics)] : ["<IPA>"],
+    meanings:
+      meanings.length > 0
+        ? meanings
+        : [
+            {
+              partOfSpeech: "definition",
+              definitions: [{ definition: "No definition available." }],
+              synonyms: [],
+            },
+          ],
+  };
+}
+
 export default function Dictionary() {
-  function handleSubmit(event) {
+  const [keyword, setKeyword] = useState("hello");
+  const [entry, setEntry] = useState(initialEntry);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    const word = keyword.trim();
+
+    if (!word) {
+      setError("Please enter a word to search.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(
+        `https://api.shecodes.io/dictionary/v1/define?word=${encodeURIComponent(
+          word
+        )}&key=${apiKey}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Word not found.");
+      }
+
+      const result = await response.json();
+      setEntry(formatEntry(result));
+    } catch (error) {
+      setError(error.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -34,28 +130,72 @@ export default function Dictionary() {
       <section className="Dictionary-searchSection" aria-label="Dictionary search">
         <p>What would you like to search?</p>
         <form className="Dictionary-search" onSubmit={handleSubmit}>
-          <input type="search" aria-label="Search word" />
-          <button type="submit">Search</button>
+          <input
+            type="search"
+            aria-label="Search word"
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+          />
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Searching" : "Search"}
+          </button>
         </form>
+        {error && <p className="Dictionary-error">{error}</p>}
       </section>
 
       <article className="Dictionary-entry">
-        <h2>Sunset</h2>
-        <p className="Dictionary-phonetic">&lt;IPA&gt;</p>
+        <h2>{entry.word}</h2>
+        <div className="Dictionary-phonetics" aria-label="Phonetics">
+          {entry.phonetics.map((phonetic) => (
+            <span key={phonetic}>{phonetic}</span>
+          ))}
+        </div>
 
-        <section className="Dictionary-definition">
-          <h3>noun</h3>
-          <p>The time in the evening when the sunlight fades...</p>
-        </section>
+        <div className="Dictionary-meanings">
+          {entry.meanings.map((meaning, meaningIndex) => {
+            const synonyms = [
+              ...new Set([
+                ...meaning.synonyms,
+                ...meaning.definitions.flatMap(
+                  (definition) => definition.synonyms
+                ),
+              ]),
+            ];
 
-        <section className="Dictionary-synonyms">
-          <h3>synonyms</h3>
-          <div>
-            <span>nightfall.</span>
-            <span>twilight</span>
-            <span>dusk</span>
-          </div>
-        </section>
+            return (
+              <section
+                className="Dictionary-meaning"
+                key={`${entry.word}-${meaning.partOfSpeech}-${meaningIndex}`}
+              >
+                <h3>{meaning.partOfSpeech}</h3>
+
+                <ol className="Dictionary-definitions">
+                  {meaning.definitions.map((definition, index) => (
+                    <li key={`${meaning.partOfSpeech}-${index}`}>
+                      <p>{definition.definition}</p>
+                      {definition.example && (
+                        <p className="Dictionary-example">
+                          Example: {definition.example}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+
+                {synonyms.length > 0 && (
+                  <section className="Dictionary-synonyms">
+                    <h4>synonyms</h4>
+                    <div>
+                      {synonyms.slice(0, 6).map((synonym) => (
+                        <span key={synonym}>{synonym}</span>
+                      ))}
+                    </div>
+                  </section>
+                )}
+              </section>
+            );
+          })}
+        </div>
 
         <div className="Dictionary-photos">
           {photos.map((photo) => (
