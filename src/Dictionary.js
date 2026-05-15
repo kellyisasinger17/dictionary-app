@@ -119,14 +119,17 @@ export default function Dictionary() {
 
   return (
     <main className="Dictionary">
-      <header className="Dictionary-header">
-        <span className="material-symbols-outlined" aria-hidden="true">
-          dictionary
-        </span>
-        <h1>Dictionary</h1>
-      </header>
+      <section
+        className="Dictionary-card Dictionary-searchSection"
+        aria-label="Dictionary search"
+      >
+        <header className="Dictionary-header">
+          <span className="material-symbols-outlined" aria-hidden="true">
+            dictionary
+          </span>
+          <h1>Dictionary</h1>
+        </header>
 
-      <section className="Dictionary-searchSection" aria-label="Dictionary search">
         <form className="Dictionary-search" onSubmit={handleSubmit}>
           <input
             type="search"
@@ -142,14 +145,16 @@ export default function Dictionary() {
         {error && <p className="Dictionary-error">{error}</p>}
       </section>
 
-      <article className="Dictionary-entry">
+      <section className="Dictionary-card Dictionary-word">
         <h2>{entry.word}</h2>
         <div className="Dictionary-phonetics" aria-label="Phonetics">
           {entry.phonetics.map((phonetic) => (
             <span key={phonetic}>{phonetic}</span>
           ))}
         </div>
+      </section>
 
+      <article className="Dictionary-card Dictionary-entry">
         <div className="Dictionary-meanings">
           {entry.meanings.map((meaning, meaningIndex) => {
             const synonyms = [
@@ -195,13 +200,15 @@ export default function Dictionary() {
             );
           })}
         </div>
+      </article>
 
+      <section className="Dictionary-card Dictionary-photoSection">
         <div className="Dictionary-photos">
           {photos.map((photo) => (
             <img src={photo.src} alt={photo.alt} key={photo.alt} />
           ))}
         </div>
-      </article>
+      </section>
     </main>
   );
 }

@@ -1,25 +1,30 @@
 .Dictionary {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
   color: #000000;
   font-family: "Times New Roman", Times, serif;
+  display: grid;
+  gap: 24px;
   margin: 48px auto;
   max-width: 980px;
-  padding: 72px 72px 64px;
+  padding: 0 24px;
 }
 
 .Dictionary p {
   font-size: 14px;
 }
 
+.Dictionary-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  padding: 42px 56px;
+}
+
 .Dictionary-header {
   align-items: flex-end;
   display: flex;
   gap: 18px;
-  margin: 0 auto 22px;
-  max-width: 820px;
+  margin: 0 0 28px;
 }
 
 .Dictionary-header h1 {
@@ -40,8 +45,7 @@
 }
 
 .Dictionary-searchSection {
-  margin: 0 auto 46px;
-  max-width: 820px;
+  margin: 0;
 }
 
 .Dictionary-search {
@@ -97,12 +101,7 @@
   text-align: left;
 }
 
-.Dictionary-entry {
-  margin: 0 auto;
-  max-width: 780px;
-}
-
-.Dictionary-entry h2,
+.Dictionary-word h2,
 .Dictionary-entry p,
 .Dictionary-entry h3 {
   font-weight: 400;
@@ -110,7 +109,7 @@
   margin: 0;
 }
 
-.Dictionary-entry h2 {
+.Dictionary-word h2 {
   font-size: 16px;
 }
 
@@ -122,7 +121,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 18px;
-  margin-top: 8px;
+  margin: 0;
 }
 
 .Dictionary-phonetics span {
@@ -187,43 +186,45 @@
 
 .Dictionary-photos {
   display: grid;
-  gap: 84px;
+  gap: 28px;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 50px;
-  max-width: 590px;
+  margin: 0;
 }
 
 .Dictionary-photos img {
   aspect-ratio: 1.5;
   display: block;
-  height: 92px;
+  height: auto;
   object-fit: cover;
-  width: 137px;
+  width: 100%;
 }
 
 @media (max-width: 860px) {
   .Dictionary {
     margin: 28px 18px;
-    padding: 52px 36px 44px;
+    padding: 0;
+  }
+
+  .Dictionary-card {
+    padding: 36px;
   }
 
   .Dictionary-search {
     gap: 16px;
   }
 
-  .Dictionary-entry {
-    max-width: 690px;
-  }
-
   .Dictionary-photos {
-    gap: 34px;
+    gap: 18px;
   }
 }
 
 @media (max-width: 620px) {
   .Dictionary {
     margin: 16px;
-    padding: 36px 22px;
+  }
+
+  .Dictionary-card {
+    padding: 28px 22px;
   }
 
   .Dictionary-header {
