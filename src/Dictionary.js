@@ -36,6 +36,16 @@ const photos = [
   },
 ];
 
+function formatPhotos(result) {
+  return (result.photos || [])
+    .slice(0, 6)
+    .map((photo) => ({
+      src: photo.src?.landscape || photo.src?.original || photo.src?.portrait,
+      alt: photo.alt || "Dictionary search result",
+    }))
+    .filter((photo) => photo.src);
+}
+
 function formatEntry(result) {
   if (!result.meanings || result.meanings.length === 0) {
     throw new Error("Word not found.");
@@ -81,6 +91,7 @@ function formatEntry(result) {
 export default function Dictionary() {
   const [keyword, setKeyword] = useState("");
   const [entry, setEntry] = useState(initialEntry);
+  const [imageResults, setImageResults] = useState(photos);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -98,18 +109,32 @@ export default function Dictionary() {
     setError("");
 
     try {
-      const response = await fetch(
+      const dictionaryResponse = await fetch(
         `https://api.shecodes.io/dictionary/v1/define?word=${encodeURIComponent(
           word
         )}&key=${apiKey}`
       );
+      const imagesResponse = await fetch(
+        `https://api.shecodes.io/images/v1/search?query=${encodeURIComponent(
+          word
+        )}&key=${apiKey}`
+      );
 
-      if (!response.ok) {
+      if (!dictionaryResponse.ok) {
         throw new Error("Word not found.");
       }
 
-      const result = await response.json();
-      setEntry(formatEntry(result));
+      const dictionaryResult = await dictionaryResponse.json();
+      setEntry(formatEntry(dictionaryResult));
+
+      if (imagesResponse.ok) {
+        const imagesResult = await imagesResponse.json();
+        const formattedPhotos = formatPhotos(imagesResult);
+
+        if (formattedPhotos.length > 0) {
+          setImageResults(formattedPhotos);
+        }
+      }
     } catch (error) {
       setError(error.message || "Something went wrong. Please try again.");
     } finally {
@@ -204,8 +229,8 @@ export default function Dictionary() {
 
       <section className="Dictionary-card Dictionary-photoSection">
         <div className="Dictionary-photos">
-          {photos.map((photo) => (
-            <img src={photo.src} alt={photo.alt} key={photo.alt} />
+          {imageResults.map((photo) => (
+            <img src={photo.src} alt={photo.alt} key={photo.src} />
           ))}
         </div>
       </section>
