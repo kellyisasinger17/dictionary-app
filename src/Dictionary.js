@@ -79,7 +79,7 @@ function formatEntry(result) {
 }
 
 export default function Dictionary() {
-  const [keyword, setKeyword] = useState("hello");
+  const [keyword, setKeyword] = useState("");
   const [entry, setEntry] = useState(initialEntry);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -128,11 +128,11 @@ export default function Dictionary() {
       </header>
 
       <section className="Dictionary-searchSection" aria-label="Dictionary search">
-        <p>What would you like to search?</p>
         <form className="Dictionary-search" onSubmit={handleSubmit}>
           <input
             type="search"
             aria-label="Search word"
+            placeholder="What would you like to search?"
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
           />

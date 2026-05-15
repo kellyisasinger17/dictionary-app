@@ -1,9 +1,17 @@
 .Dictionary {
   background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
   color: #000000;
-  font-family: Arial, Helvetica, sans-serif;
-  min-height: 100vh;
-  padding: 96px 24px 72px;
+  font-family: "Times New Roman", Times, serif;
+  margin: 48px auto;
+  max-width: 980px;
+  padding: 72px 72px 64px;
+}
+
+.Dictionary p {
+  font-size: 14px;
 }
 
 .Dictionary-header {
@@ -15,7 +23,7 @@
 }
 
 .Dictionary-header h1 {
-  font-size: 31px;
+  font-size: 24px;
   font-weight: 400;
   line-height: 1;
   margin: 0;
@@ -71,14 +79,6 @@
   max-width: 820px;
 }
 
-.Dictionary-searchSection p {
-  font-size: 22px;
-  font-style: italic;
-  line-height: 1.2;
-  margin: 0 190px 4px 0;
-  text-align: center;
-}
-
 .Dictionary-search {
   align-items: center;
   display: flex;
@@ -94,6 +94,11 @@
   height: 61px;
   outline: 0;
   padding: 0 24px;
+}
+
+.Dictionary-search input::placeholder {
+  color: #666666;
+  font-style: italic;
 }
 
 .Dictionary-search button {
@@ -130,10 +135,17 @@
 .Dictionary-entry h2,
 .Dictionary-entry p,
 .Dictionary-entry h3 {
-  font-size: 24px;
   font-weight: 400;
   line-height: 1.2;
   margin: 0;
+}
+
+.Dictionary-entry h2 {
+  font-size: 16px;
+}
+
+.Dictionary-entry h3 {
+  font-size: 24px;
 }
 
 .Dictionary-phonetics {
@@ -179,7 +191,7 @@
 }
 
 .Dictionary-definitions p {
-  font-size: 23px;
+  font-size: 14px;
 }
 
 .Dictionary-example {
@@ -221,11 +233,8 @@
 
 @media (max-width: 860px) {
   .Dictionary {
-    padding-top: 60px;
-  }
-
-  .Dictionary-searchSection p {
-    margin-right: 0;
+    margin: 28px 18px;
+    padding: 52px 36px 44px;
   }
 
   .Dictionary-search {
@@ -242,6 +251,11 @@
 }
 
 @media (max-width: 620px) {
+  .Dictionary {
+    margin: 16px;
+    padding: 36px 22px;
+  }
+
   .Dictionary-header {
     align-items: center;
     justify-content: center;
@@ -260,8 +274,6 @@
     width: 100%;
   }
 
-  .Dictionary-entry h2,
-  .Dictionary-entry p,
   .Dictionary-entry h3 {
     font-size: 22px;
   }
